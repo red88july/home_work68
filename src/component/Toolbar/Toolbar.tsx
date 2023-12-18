@@ -1,5 +1,4 @@
 import reactLogo from '../../images/ic-react.png';
-import {Link} from 'react-router-dom';
 
 const Toolbar = () => {
   return (
@@ -13,14 +12,6 @@ const Toolbar = () => {
           <strong>Application TASK list</strong>
         </div>
       </div>
-      <ul className="navbar-nav mr-auto flex-row flex-nowrap align-items-center justify-content-center gap-3">
-        <li className="nav-item">
-          <Link to="/" className="nav-link">Home</Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/todoform" className="nav-link">Task List form</Link>
-        </li>
-       </ul>
     </nav>
 );
 };
