@@ -31,11 +31,7 @@ const TodoForm = () => {
   };
 
   dispatch(getTask());
-
   const objectKeysGet: Task[] = getTasksFromServer ? Object.values((getTasksFromServer)) : [];
-  console.log(`Object values is:`, objectKeysGet);
-
-  console.log(getTasksFromServer);
 
   return (
     <>
