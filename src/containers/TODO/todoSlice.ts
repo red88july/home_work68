@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {postTask} from './todoThunk';
+import { postTask} from './todoThunk';
 
 export interface Task {
   task: string,
