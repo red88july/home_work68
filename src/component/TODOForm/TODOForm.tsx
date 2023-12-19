@@ -1,13 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppDispatch, RootState} from '../../app/store';
 import {useDispatch, useSelector} from 'react-redux';
-import {isLoadingSpinner, isStopSpinner, Task} from '../../containers/TODO/todoSlice';
 import {getTask, postTask} from '../../containers/TODO/todoThunk';
-import Spinner from '../Spinner/Spinner';
+import {Tasks} from "../../types";
 
 const TodoForm = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const btnLoading = useSelector((state: RootState) => state.isLoading);
     const getTasksFromServer = useSelector((state: RootState) => state.task);
     const [task, setTask] = useState('');
 
@@ -20,18 +18,19 @@ const TodoForm = () => {
 
         try {
             if (task.trim() !== '') {
-                dispatch(isLoadingSpinner());
                 await dispatch(postTask(task));
             }
         } catch (e) {
             console.log(`Fetched task is error ${e}`);
         }
         setTask('');
-        dispatch(isStopSpinner());
     };
 
-    dispatch(getTask());
-    const objectKeysGet: Task[] = getTasksFromServer ? Object.values((getTasksFromServer)) : [];
+    useEffect(() => {
+        dispatch(getTask());
+    }, [dispatch]);
+
+    const objectKeysGet: Tasks[] = getTasksFromServer ? Object.values((getTasksFromServer)) : [];
 
     return (
         <>
@@ -69,7 +68,7 @@ const TodoForm = () => {
                             required
                             autoFocus/>
                         <button type="submit" className="btn btn-success p-3">
-                            {btnLoading ? <Spinner/> : 'Add Task'}
+                            Add task
                         </button>
                     </form>
                 </div>

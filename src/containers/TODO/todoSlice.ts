@@ -1,45 +1,52 @@
 import {createSlice} from '@reduxjs/toolkit';
-import { postTask} from './todoThunk';
-
-export interface Task {
-  task: string,
-}
+import {getTask, postTask} from './todoThunk';
+import {Tasks} from "../../types";
 
 interface TodoSlice {
   isLoading: boolean,
-  task: string;
+  task: Tasks[];
   loading: boolean,
   error: boolean,
   checkbox: boolean,
+  loadRequest: boolean,
 }
 
 const initialState: TodoSlice = {
   isLoading: false,
-  task: '',
+  task: [],
   loading: false,
   error: false,
   checkbox: true,
+  loadRequest: false,
 };
 
 export const todoSlice = createSlice({
   name: 'todo',
   initialState,
-  reducers: {
-    isLoadingSpinner: (state) => {
-      state.isLoading = true;
-    },
-    isStopSpinner: (state) => {
-      state.isLoading = false;
-    },
-  },
+  reducers: {},
 
   extraReducers: (builder) => {
+    builder.addCase(getTask.pending, (state) => {
+      state.loading = true;
+      state.error = false;
+    });
+
+    builder.addCase(getTask.rejected, (state, {payload: task}) => {
+      state.loading = false;
+      state.task = task;
+    });
+
+    builder.addCase(getTask.rejected, (state) => {
+      state.loading = false;
+      state.error = true;
+    });
+
     builder.addCase(postTask.pending, (state) => {
       state.loading = true;
       state.error = false;
     });
 
-    builder.addCase(postTask.fulfilled, (state,action) => {
+    builder.addCase(postTask.fulfilled, (state, action) => {
       state.loading = true;
       state.task = action.payload;
     });
@@ -52,8 +59,5 @@ export const todoSlice = createSlice({
 });
 
 export const taskReducer = todoSlice.reducer;
-export const {
-  isLoadingSpinner,
-  isStopSpinner}= todoSlice.actions;
 
 
