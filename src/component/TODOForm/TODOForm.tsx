@@ -17,9 +17,7 @@ const TodoForm = () => {
         event.preventDefault();
 
         try {
-            if (task.trim() !== '') {
-                await dispatch(postTask(task));
-            }
+            await dispatch(postTask(task));
         } catch (e) {
             console.log(`Fetched task is error ${e}`);
         }
@@ -27,8 +25,9 @@ const TodoForm = () => {
     };
 
     useEffect(() => {
-        dispatch(getTask());
-    }, [dispatch]);
+        if (!getTasksFromServer)
+            dispatch(getTask());
+    }, [dispatch, getTasksFromServer]);
 
     const objectKeysGet: Tasks[] = getTasksFromServer ? Object.values((getTasksFromServer)) : [];
 
@@ -38,9 +37,7 @@ const TodoForm = () => {
                 <div className="d-flex flex-column ms-5">
                     {objectKeysGet.map((task, index) => (
                         <div key={index}
-                             className="border border-3
-                  border-secondary rounded-3
-                  text-center mb-2 d-flex flex-column p-3">
+                             className="border border-3 border-secondary rounded-3 text-center mb-2 d-flex flex-column p-3">
                             <p className="text-center mb-1">{task.task}</p>
                             <div className="d-flex gap-2">
                                 <span>Status:</span>
@@ -51,12 +48,7 @@ const TodoForm = () => {
                 </div>
                 <div className="ms-5 mt-5">
                     <form onClick={onFormSubmit}
-                          className="d-flex
-                 flex-column
-                 justify-content-start
-                 border border-3
-                 border-success-subtle
-                  rounded-2 p-2 w-100">
+                          className="d-flex flex-column justify-content-start border border-3 border-success-subtle rounded-2 p-2 w-100">
                         <label htmlFor="input-task" className="mb-1 form-label">Input task</label>
                         <input
                             name="task"

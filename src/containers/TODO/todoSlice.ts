@@ -8,7 +8,6 @@ interface TodoSlice {
   loading: boolean,
   error: boolean,
   checkbox: boolean,
-  loadRequest: boolean,
 }
 
 const initialState: TodoSlice = {
@@ -17,7 +16,6 @@ const initialState: TodoSlice = {
   loading: false,
   error: false,
   checkbox: true,
-  loadRequest: false,
 };
 
 export const todoSlice = createSlice({
@@ -31,8 +29,8 @@ export const todoSlice = createSlice({
       state.error = false;
     });
 
-    builder.addCase(getTask.rejected, (state, {payload: task}) => {
-      state.loading = false;
+    builder.addCase(getTask.fulfilled, (state, {payload: task}) => {
+      state.loading = true;
       state.task = task;
     });
 
